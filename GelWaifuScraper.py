@@ -4,7 +4,9 @@ import urllib
 from pathlib import Path
 from os import path
 import getpass
+import concurrent.futures
 
+MAX_THREADS = 30
 
 username = getpass.getuser()
 directorypath = f"//home//{username}//GelWaifuScraper//"
@@ -21,38 +23,55 @@ def directory():
         pass
 
 
-directory()
+def downloadImages(amount, url):
+    search = requests.get(url)
+    json = search.json()
 
-tag = input("Enter the tags you would like to search for:\n")
+    downloaded = 0
 
-amount = int(input("Enter the amount of pictures you would like to install:\n"))
+    for image in json:
 
-url = (f'https://gelbooru.com/index.php?page=dapi&s=post&q=index&json=1&tags={tag}')
+        get = image.get("file_url")
+        split = get.rsplit('/', 1)[1]
+        fpath = os.path.join(imagepath, split)
 
-search = requests.get(url)
-json = search.json()
+        filename = os.path.join(directorypath + split)
+        if filename not in fpath:
+            tryout = requests.get(get)
 
-downloaded = 0
+            if get.find('/'):
+                print(f"Downloading {get}....")
+                downloaded += 1
+                with open(filename, 'wb') as writeFile:
+                    writeFile.write(tryout.content)
 
-for image in json:
+            if amount == int(downloaded):
+                print("Finished downloading images.")
+                break
 
-    get = image.get("file_url")
-    split = get.rsplit('/', 1)[1]
-    fpath = os.path.join(imagepath, split)
 
-    filename = os.path.join(directorypath + split)
-    if filename not in fpath:
-        tryout = requests.get(get)
+def downloadFiles(amount, url):
+    threads = min(MAX_THREADS, amount)
+    print(threads)
+    with concurrent.futures.ThreadPoolExecutor(max_workers=threads) as executor:
+        executor.map(downloadImages(amount, url))
 
-        if get.find('/'):
-            print(f"Downloading {get}....")
-            downloaded += 1
-            with open(filename, 'wb') as writeFile:
-                writeFile.write(tryout.content)
 
-        if amount == int(downloaded):
-            print("Finished downloading images.")
-            break
+def main():
+    print("This is from the main class.")
+    tag = input("Enter the tags you would like to search for:\n")
+
+    amount = int(input("Enter the amount of pictures you would like to install:\n"))
+
+    url = (f'https://gelbooru.com/index.php?page=dapi&s=post&q=index&json=1&tags={tag}')
+
+    directory()
+
+    downloadFiles(amount, url)
+
+
+if __name__ == '__main__':
+    main()
 
 
 print("Finished.")
