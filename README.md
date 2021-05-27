@@ -1,5 +1,6 @@
 # GelWaifuScraper
-* Gelbooru Web Scraper Written in Python for Weebs
+**Gelbooru Web Scraper Written in Python for Weebs**
+
 ![waifuscraper](https://user-images.githubusercontent.com/64178604/119762643-13a90c00-be7c-11eb-8795-0f27e154ea25.gif)
 
 # Needed Libraries:
