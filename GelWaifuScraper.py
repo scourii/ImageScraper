@@ -5,6 +5,9 @@ from pathlib import Path
 from os import path
 import getpass
 import concurrent.futures
+import sys
+import time
+import getopt
 
 MAX_THREADS = 30
 
@@ -51,27 +54,45 @@ def downloadImages(amount, url):
 
 
 def downloadFiles(amount, url):
-    threads = min(MAX_THREADS, amount)
-    print(threads)
-    with concurrent.futures.ThreadPoolExecutor(max_workers=threads) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_THREADS) as executor:
         executor.map(downloadImages(amount, url))
 
 
-def main():
-    print("This is from the main class.")
-    tag = input("Enter the tags you would like to search for:\n")
+def main(argv):
+    print(argv)
+    if argv[1:] != "":
+        tag = ''
+        amount = 0
+        try:
+            opts, args = getopt.getopt(argv[1:], "ta", ["tags", "amount"])
+        except getopt.GetoptError:
+            print('main.py -t <tags> -a <number>')
+            sys.exit(2)
+        for opt, arg in opts:
+            if opt == '-h':
+                print('main.py -t <tag> -a <number>')
+                sys.exit()
+            elif opt in ("-t", "--tags"):
+                tag = arg
+            elif opt in ("-a", "--amount"):
+                stramount = arg
+                amount = int(stramount)
+        url = (f'https://gelbooru.com/index.php?page=dapi&s=post&q=index&json=1&tags={tag}')
+        downloadFiles(amount, url)
+    
+    else:
+        tag = input("Enter the tags you would like to search for:\n")
 
-    amount = int(input("Enter the amount of pictures you would like to install:\n"))
+        amount = int(input("Enter the amount of pictures you would like to install:\n"))
 
-    url = (f'https://gelbooru.com/index.php?page=dapi&s=post&q=index&json=1&tags={tag}')
+        url = (f'https://gelbooru.com/index.php?page=dapi&s=post&q=index&json=1&tags={tag}')
 
-    directory()
-
-    downloadFiles(amount, url)
+        directory()
+        downloadFiles(amount, url)
 
 
 if __name__ == '__main__':
-    main()
+    main(sys.argv[1:])
 
 
 print("Finished.")
