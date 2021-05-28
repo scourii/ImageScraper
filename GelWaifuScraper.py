@@ -1,12 +1,8 @@
 import requests
 import os
-import urllib
-from pathlib import Path
-from os import path
 import getpass
 import concurrent.futures
 import sys
-import time
 import argparse
 
 MAX_THREADS = 30
@@ -69,7 +65,7 @@ def main(argv):
             amount = args.amount
         if args.tags:
             tag = args.tags
-        
+
         url = (f'https://gelbooru.com/index.php?page=dapi&s=post&q=index&json=1&tags={tag}')
         directory()
         downloadFiles(amount, url)
