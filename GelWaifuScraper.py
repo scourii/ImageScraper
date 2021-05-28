@@ -7,7 +7,7 @@ import getpass
 import concurrent.futures
 import sys
 import time
-import getopt
+import argparse
 
 MAX_THREADS = 30
 
@@ -27,6 +27,7 @@ def directory():
 
 
 def downloadImages(amount, url):
+    print(amount)
     search = requests.get(url)
     json = search.json()
 
@@ -59,27 +60,19 @@ def downloadFiles(amount, url):
 
 
 def main(argv):
-    print(argv)
-    if argv[1:] != "":
-        tag = ''
-        amount = 0
-        try:
-            opts, args = getopt.getopt(argv[1:], "ta", ["tags", "amount"])
-        except getopt.GetoptError:
-            print('main.py -t <tags> -a <number>')
-            sys.exit(2)
-        for opt, arg in opts:
-            if opt == '-h':
-                print('main.py -t <tag> -a <number>')
-                sys.exit()
-            elif opt in ("-t", "--tags"):
-                tag = arg
-            elif opt in ("-a", "--amount"):
-                stramount = arg
-                amount = int(stramount)
+    if len(sys.argv) > 1:
+        parser = argparse.ArgumentParser(description="Downloads images from gelbooru.")
+        parser.add_argument('-a', "--amount", help="Amount of images to install.", type=int)
+        parser.add_argument('-t', "--tags", help="Tags to search for.")
+        args = parser.parse_args()
+        if args.amount:
+            amount = args.amount
+        if args.tags:
+            tag = args.tags
+        
         url = (f'https://gelbooru.com/index.php?page=dapi&s=post&q=index&json=1&tags={tag}')
+        directory()
         downloadFiles(amount, url)
-    
     else:
         tag = input("Enter the tags you would like to search for:\n")
 
