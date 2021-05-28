@@ -4,17 +4,24 @@ import getpass
 import concurrent.futures
 import sys
 import argparse
+import platform
 
 MAX_THREADS = 30
 
 username = getpass.getuser()
-directorypath = f"//home//{username}//GelWaifuScraper//"
-imagepath = f'/home/{username}/GelWaifuScraper/'
+
+OSName = platform.system()
+if OSName == "Windows":
+    directorypath = f"C:\\Users\\{username}\\"
+    
+elif OSName == "Linux":
+    directorypath = f"//home//{username}//GelWaifuScraper//"
+    imagepath = f'/home/{username}/GelWaifuScraper/'
 
 
 def directory():
     try:
-        os.makedirs(directorypath)
+        os.makedirs(imagepath)
         print("Created directory.")
 
     except FileExistsError:
@@ -34,13 +41,12 @@ def downloadImages(amount, url):
         get = image.get("file_url")
         split = get.rsplit('/', 1)[1]
         fpath = os.path.join(imagepath, split)
-
         filename = os.path.join(directorypath + split)
         if filename not in fpath:
             tryout = requests.get(get)
 
             if get.find('/'):
-                print(f"Downloading {get}....")
+                print(f"Downloading {get}")
                 downloaded += 1
                 with open(filename, 'wb') as writeFile:
                     writeFile.write(tryout.content)
@@ -82,6 +88,3 @@ def main(argv):
 
 if __name__ == '__main__':
     main(sys.argv[1:])
-
-
-print("Finished.")
