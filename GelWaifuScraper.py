@@ -1,3 +1,4 @@
+import random
 import requests
 import os
 import getpass
@@ -12,8 +13,8 @@ username = getpass.getuser()
 
 OSName = platform.system()
 if OSName == "Windows":
-    directorypath = f"C:\\Users\\{username}\\"
-    
+    directorypath = f"C:\\Users\\{username}\\GelWaifuScraper"
+    imagepath = f"C:\\Users\\{username}\\GelWaifuScraper\\"
 elif OSName == "Linux":
     directorypath = f"//home//{username}//GelWaifuScraper//"
     imagepath = f'/home/{username}/GelWaifuScraper/'
@@ -23,6 +24,7 @@ def directory():
     try:
         os.makedirs(imagepath)
         print("Created directory.")
+        pass
 
     except FileExistsError:
         print("GelWaifuScraper directory in use.")
@@ -30,18 +32,16 @@ def directory():
 
 
 def downloadImages(amount, url):
-    print(amount)
-    search = requests.get(url)
-    json = search.json()
-
+    search = requests.get(url).json()
     downloaded = 0
 
-    for image in json:
-
-        get = image.get("file_url")
+    for image in search:
+        randomimage = random.choice(search)
+        get = randomimage.get("file_url")
         split = get.rsplit('/', 1)[1]
         fpath = os.path.join(imagepath, split)
         filename = os.path.join(directorypath + split)
+        
         if filename not in fpath:
             tryout = requests.get(get)
 
@@ -54,6 +54,8 @@ def downloadImages(amount, url):
             if amount == int(downloaded):
                 print("Finished downloading images.")
                 break
+        else:
+            return
 
 
 def downloadFiles(amount, url):
@@ -71,8 +73,8 @@ def main(argv):
             amount = args.amount
         if args.tags:
             tag = args.tags
-
-        url = (f'https://gelbooru.com/index.php?page=dapi&s=post&q=index&json=1&tags={tag}')
+        url = format(tag)
+        url = (f'https://gelbooru.com/index.php?page=dapi&s=post&q=index&json=1&limit=3000&tags={tag}')
         directory()
         downloadFiles(amount, url)
     else:
@@ -80,7 +82,7 @@ def main(argv):
 
         amount = int(input("Enter the amount of pictures you would like to install:\n"))
 
-        url = (f'https://gelbooru.com/index.php?page=dapi&s=post&q=index&json=1&tags={tag}')
+        url = (f'https://gelbooru.com/index.php?page=dapi&s=post&q=index&json=1&limit=3000&tags={tag}')
 
         directory()
         downloadFiles(amount, url)
