@@ -39,23 +39,18 @@ def downloadImages(amount, url):
         randomimage = random.choice(search)
         get = randomimage.get("file_url")
         split = get.rsplit('/', 1)[1]
-        fpath = os.path.join(imagepath, split)
         filename = os.path.join(directorypath + split)
-        
-        if filename not in fpath:
-            tryout = requests.get(get)
+        tryout = requests.get(get)
 
-            if get.find('/'):
-                print(f"Downloading {get}")
-                downloaded += 1
-                with open(filename, 'wb') as writeFile:
-                    writeFile.write(tryout.content)
+        if get.find('/'):
+            print(f"Downloading {get}")
+            downloaded += 1
+            with open(filename, 'wb') as writeFile:
+                writeFile.write(tryout.content)
 
-            if amount == int(downloaded):
-                print("Finished downloading images.")
-                break
-        else:
-            return
+        if amount == int(downloaded):
+            print("Finished downloading images.")
+            break
 
 
 def downloadFiles(amount, url):
@@ -77,6 +72,7 @@ def main(argv):
         url = (f'https://gelbooru.com/index.php?page=dapi&s=post&q=index&json=1&limit=3000&tags={tag}')
         directory()
         downloadFiles(amount, url)
+
     else:
         tag = input("Enter the tags you would like to search for:\n")
 
