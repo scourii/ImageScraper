@@ -8,6 +8,14 @@
 # Needed Programs:
 * Python3.8
 * Pathlib
+
+# How to Install:
+```
+git clone https://github.com/SugarBlank/WaifuScraper
+cd WaifuScraper
+chmod +x gws
+sudo mv gws /usr/local/bin
+```
 # How to use:
 * Insert a tag like:
 * **"keqing_(genshin_impact)"** or **"weedy_(arknights)"** then you type the amount of images you would like to install.
