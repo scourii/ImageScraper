@@ -1,9 +1,9 @@
-# GelWaifuScraper
-**Gelbooru Web Scraper Written in Python for Weebs**
+# Image Scraper
+**Image Scraper Written in Python**
 
-![waifuscraper1](https://user-images.githubusercontent.com/64178604/119928167-0dcd2c80-bf49-11eb-9ef1-b004076d3521.gif)
+![animescraper1](https://user-images.githubusercontent.com/64178604/119928167-0dcd2c80-bf49-11eb-9ef1-b004076d3521.gif)
 
-![waifuscraper](https://user-images.githubusercontent.com/64178604/119762643-13a90c00-be7c-11eb-8795-0f27e154ea25.gif)
+![animescraper](https://user-images.githubusercontent.com/64178604/119762643-13a90c00-be7c-11eb-8795-0f27e154ea25.gif)
 
 # Needed Programs:
 * Python3.8
@@ -11,10 +11,10 @@
 
 # How to Install:
 ```
-git clone https://github.com/SugarBlank/WaifuScraper
-cd WaifuScraper
-chmod +x gws
-sudo mv gws /usr/local/bin
+git clone https://github.com/SugarBlank/ImageScraper
+cd ImageScraper
+chmod +x iws 
+sudo mv iws /usr/local/bin
 ```
 # How to use:
 * Insert a tag like:
