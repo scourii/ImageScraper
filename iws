@@ -14,11 +14,11 @@ username = getpass.getuser()
 
 OSName = platform.system()
 if OSName == "Windows":
-    directorypath = f"C:\\Users\\{username}\\GelWaifuScraper"
-    imagepath = f"C:\\Users\\{username}\\GelWaifuScraper\\"
+    directorypath = f"C:\\Users\\{username}\\ImgWebScraper"
+    imagepath = f"C:\\Users\\{username}\\ImgWebScraper\\"
 elif OSName == "Linux":
-    directorypath = f"//home//{username}//GelWaifuScraper//"
-    imagepath = f'/home/{username}/GelWaifuScraper/'
+    directorypath = f"//home//{username}//ImgWebScraper//"
+    imagepath = f'/home/{username}/ImgWebScraper/'
 
 
 def directory():
@@ -28,7 +28,7 @@ def directory():
         pass
 
     except FileExistsError:
-        print("GelWaifuScraper directory in use.")
+        print("Directory in use.")
         pass
 
 
